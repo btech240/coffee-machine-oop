@@ -2,18 +2,18 @@ from coffee_maker import CoffeeMaker
 from menu import Menu, MenuItem
 from money_machine import MoneyMachine
 
-off = False
-money = 0.00
+is_off = False
 
 coffee_machine = CoffeeMaker()
 money_machine = MoneyMachine()
+menu = Menu()
 
 
 def prompt():
-    return input("What would you like? (espresso/latte/cappuccino): ")
+    return input(f"What would you like? ({menu.get_items()}): ")
 
 
-while not off:
+while not is_off:
 
     user_input = prompt()
 
@@ -21,11 +21,7 @@ while not off:
         off = True
     elif user_input == "report":
         coffee_machine.report()
-    elif user_input == "espresso":
-        money_machine.process_coins()
-    elif user_input == "latte":
-        money_machine.process_coins()
-    elif user_input == "cappuccino":
-        money_machine.process_coins()
+        if money_machine.profit > 0:
+            money_machine.report()
     else:
-        print("Invalid request. Try again.")
+        drink = menu.find_drink(user_input)
