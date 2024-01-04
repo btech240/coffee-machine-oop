@@ -9,19 +9,16 @@ money_machine = MoneyMachine()
 menu = Menu()
 
 
-def prompt():
-    return input(f"What would you like? ({menu.get_items()}): ")
-
-
 while not is_off:
 
-    user_input = prompt()
+    user_input = input(f"What would you like? ({menu.get_items()}): ")
 
     if user_input == "off":
-        off = True
+        is_off = True
     elif user_input == "report":
         coffee_machine.report()
-        if money_machine.profit > 0:
-            money_machine.report()
+        money_machine.report()
     else:
         drink = menu.find_drink(user_input)
+        if coffee_machine.is_resource_sufficient(drink) and money_machine.make_payment(drink.cost):
+            coffee_machine.make_coffee(drink)
